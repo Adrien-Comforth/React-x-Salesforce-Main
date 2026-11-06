@@ -4,6 +4,10 @@
         <application>ContactManager</application>
         <visible>true</visible>
     </applicationVisibilities>
+    <applicationVisibilities>
+        <application>ContactCard</application>
+        <visible>true</visible>
+    </applicationVisibilities>
     <hasActivationRequired>false</hasActivationRequired>
     <label>ContactManager Access</label>
     <userPermissions>

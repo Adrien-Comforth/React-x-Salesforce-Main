@@ -10,7 +10,7 @@
     <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
     <isNavTabPersistenceDisabled>false</isNavTabPersistenceDisabled>
     <isOmniPinnedViewEnabled>false</isOmniPinnedViewEnabled>
-    <label>ContactManager</label>
+    <label>Contact Manager</label>
     <navType>Standard</navType>
     <uiBundle>c__ContactManager</uiBundle>
     <uiType>Lightning</uiType>
