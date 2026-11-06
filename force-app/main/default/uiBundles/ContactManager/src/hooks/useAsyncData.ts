@@ -1,13 +1,18 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 interface UseAsyncDataResult<T> {
   data: T | null;
   loading: boolean;
   error: string | null;
+  /**
+   * Runs the fetcher again now, even if `deps` haven't changed (for example
+   * after a mutation). The previous `data` stays available while it loads.
+   */
+  reload: () => void;
 }
 
 /**
- * Runs an async fetcher on mount and whenever `deps` change.
+ * Runs an async fetcher on mount, whenever `deps` change, and on `reload()`.
  * Returns the loading/error/data state. Does not cache — every call
  * to the fetcher hits the source directly.
  *
@@ -63,5 +68,11 @@ export function useAsyncData<T>(
     };
   }, [generation]);
 
-  return { data, loading, error };
+  const reload = useCallback(() => {
+    setGeneration(g => g + 1);
+    setLoading(true);
+    setError(null);
+  }, []);
+
+  return { data, loading, error, reload };
 }
