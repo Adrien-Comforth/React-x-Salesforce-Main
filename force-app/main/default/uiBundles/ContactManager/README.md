@@ -7,6 +7,7 @@ This UI Bundle lives inside an SFDX project. The project root is the directory t
 ## Table of contents
 
 - [Run (development)](#run-development)
+- [GraphQL schema](#graphql-schema)
 - [Build](#build)
 - [Deploy](#deploy)
 - [Test](#test)
@@ -21,6 +22,18 @@ npm run dev
 ```
 
 This starts the Vite dev server (e.g. http://localhost:5173). Use `npm run dev:design` to run in design mode.
+
+## GraphQL schema
+
+`schema.graphql` is downloaded from your org and is not committed (it is listed in `.gitignore`). To regenerate it, run this from the UI Bundle directory:
+
+```bash
+npm run graphql:schema
+```
+
+The file is written to the SFDX project root, using your default org. To use another org, set `SF_TARGET_ORG` first: `SF_TARGET_ORG=<alias> npm run graphql:schema` in bash, or `$env:SF_TARGET_ORG = "<alias>"` in PowerShell.
+
+When the schema exists, `npm run dev` and `npm run build` also regenerate the GraphQL types in `src/api/graphql-operations-types.ts`, and `npm run lint` also lints the GraphQL operations.
 
 ## Build
 
