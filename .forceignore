@@ -12,3 +12,11 @@ package.xml
 **/__tests__/**
 
 node_modules/
+
+# Empty StandardValueSets: these picklists have no values in the org, and the Metadata API
+# rejects an empty set on deploy ("Required field is missing: standardValue").
+**/standardValueSets/FiscalYearPeriodName.standardValueSet-meta.xml
+**/standardValueSets/IdeaMultiCategory.standardValueSet-meta.xml
+**/standardValueSets/IdeaStatus.standardValueSet-meta.xml
+**/standardValueSets/OpportunityCompetitor.standardValueSet-meta.xml
+**/standardValueSets/OrderType.standardValueSet-meta.xml
