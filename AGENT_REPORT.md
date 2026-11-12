@@ -1,5 +1,13 @@
 # AGENT_REPORT: ContactManager full CRUD
 
+> **Historical report, written during the build (2026-11-06 to 2026-11-12).** It records what was done and why, and it holds the manual test checklist and the error-shape research. For the **current** state of the project, see [HANDOFF.md](HANDOFF.md). For setup and usage, see [README.md](README.md).
+>
+> Statements below that are now out of date (checked 2026-11-12):
+> - The work is no longer uncommitted. Both feature branches are merged into `main` and pushed to `origin`.
+> - The validation rule now exists: `Phone_Required_With_Title`, error on Phone, "Phone is required when a Title is set."
+> - The Contact Card is no longer blocked. The Trusted URLs with frame-src are in place, and the card works on the Contact record page.
+> - The Contact Card now has 21 tests, not 22. The custom resize hook was removed (see the follow-up section).
+
 ## STATUS: SUCCESS
 
 - Full CRUD on Contact is built in the `ContactManager` UI bundle. Type-check and lint pass, and **65 unit tests pass** (mocked Data SDK).
@@ -16,7 +24,7 @@ App Launcher → search **"ContactManager"**. The `ContactManager_Access` permis
 
 **Before you start**
 
-1. **Create your validation rule.** None exists on Contact yet (I checked with a read-only Tooling API query). Formula: `AND(NOT(ISBLANK(Title)), ISBLANK(Phone))`, error location: the **Phone** field. For example, use the message "Phone is required when Title is set."
+1. **Create your validation rule.** *(Done: `Phone_Required_With_Title` exists as of 2026-11-12.)* None existed on Contact at the time (I checked with a read-only Tooling API query). Formula: `AND(NOT(ISBLANK(Title)), ISBLANK(Phone))`, error location: the **Phone** field. For example, use the message "Phone is required when Title is set."
 2. Open the browser DevTools console (F12). Every failed save or delete logs `[ContactManager] <Operation> returned errors:` followed by the raw JSON.
 3. For test 4 you need text over 128 characters. In the DevTools console, run `copy('x'.repeat(130))`, then paste into Title.
 
@@ -236,6 +244,24 @@ I couldn't verify how `lightning-ui-embedding` sets props: it's a platform compo
 - Removed: `src/pages/Home.tsx`.
 - LWC: moved from `lwc/force-app/main/default/lwc/contactCardHost` to `lwc/contactCardHost`. It now passes the record Id, and its record-page target is limited to Contact.
 
-**Blocking the embedded card:** `UIBundleSettings.salesforceAppDomain` is still `false` (re-checked read-only), and the embed URL is on the app domain (`*.my.salesforce.app`). Turning it on is your Setup change.
+**Blocking the embedded card (at the time):** `UIBundleSettings.salesforceAppDomain` was `false` (re-checked read-only), and the embed URL is on the app domain (`*.my.salesforce.app`). Turning it on was your Setup change.
 
 **Org commands:** one deploy, plus read-only checks: retrieve of `Settings:UIBundle` to the scratchpad, and Tooling queries on `LightningComponentBundle` and `MetadataComponentDependency`.
+
+### Resize fix (2026-11-12)
+
+**Symptom:** on the record page, the iframe kept growing taller.
+
+**Cause:**
+1. The SDK's embedding bridge (`@salesforce/sf-embedding-bridge`) observes `document.body` and sends its height to the host, which sizes the frame to it.
+2. The template's `global.css` gave `html`, `body` and `#root` `min-h-screen`. Inside an iframe, 100vh is the frame's height, so the body was always at least as tall as the frame.
+3. Each report could therefore only keep or raise the height, and any extra pixel made the frame grow again.
+
+**Fix:**
+- Removed `min-h-screen` from the bundle's `global.css`, with a comment explaining why.
+- Removed the custom `useFitHostHeight` hook and its test. The bridge already does that job.
+- Deployed the bundle: Deploy ID `0AfQy00000ePRXSKA4`, Succeeded. You confirmed the card works.
+
+**Current state:** checked read-only on 2026-11-12.
+- Trusted URLs with frame-src exist for `https://*.salesforce.app`, the Lightning domain and the app domain.
+- The metadata read of `salesforceAppDomain` still returns `false`, but the card loads. This is not explained (see HANDOFF.md).
