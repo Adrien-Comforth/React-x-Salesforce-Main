@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ExtlClntAppOauthSettings xmlns="http://soap.sforce.com/2006/04/metadata">
+    <commaSeparatedOauthScopes>Api, RefreshToken, SFApiPlatform</commaSeparatedOauthScopes>
+    <externalClientApplication>Product_OAuth_App</externalClientApplication>
+    <isFirstPartyAppEnabled>false</isFirstPartyAppEnabled>
+    <label>Product_OAuth_App_oauth</label>
+    <oauthLink>00DQy000011pNfy:888Qy000001wJbB</oauthLink>
+</ExtlClntAppOauthSettings>
