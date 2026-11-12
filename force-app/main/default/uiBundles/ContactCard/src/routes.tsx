@@ -1,22 +1,11 @@
 import type { RouteObject } from 'react-router';
-import AppLayout from '@/appLayout';
-import Home from './pages/Home';
-import NotFound from './pages/NotFound';
+import ContactCardPage from './pages/ContactCardPage';
 
+// A single-view app embedded in a record page: every path shows the card, with
+// no navigation chrome, whatever path the host serves the bundle under.
 export const routes: RouteObject[] = [
   {
-    path: '/',
-    element: <AppLayout />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-        handle: { showInNavigation: true, label: 'Home' },
-      },
-      {
-        path: '*',
-        element: <NotFound />,
-      },
-    ],
+    path: '*',
+    element: <ContactCardPage />,
   },
 ];
