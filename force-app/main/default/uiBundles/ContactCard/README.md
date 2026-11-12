@@ -13,7 +13,7 @@ This UI Bundle lives inside an SFDX project. The project root is the directory t
 
 ## Run (development)
 
-From the UI Bundle directory (`force-app/main/default/uiBundles/base-react-app`):
+From the UI Bundle directory (`force-app/main/default/uiBundles/ContactCard`):
 
 ```bash
 npm install
@@ -40,13 +40,13 @@ From the **SFDX project root** (the directory that contains `force-app/`):
 1. Build the UI Bundle:
 
    ```bash
-   cd force-app/main/default/uiBundles/base-react-app && npm install && npm run build && cd -
+   cd force-app/main/default/uiBundles/ContactCard && npm install && npm run build && cd -
    ```
 
 2. Deploy the UI Bundle only:
 
    ```bash
-   sf project deploy start --source-dir force-app/main/default/ui-bundles --target-org <alias>
+   sf project deploy start --source-dir force-app/main/default/uiBundles/ContactCard --target-org <alias>
    ```
 
    Or deploy all metadata:
