@@ -211,3 +211,31 @@ Local only: `git switch -c feature/contact-crud`, `git commit` (baseline), `npm 
 - **The real error shapes** weren't checked live, because I wasn't allowed to write records. Your manual tests plus the console JSON will settle this.
 - `tsconfig.tsbuildinfo` is tracked and changes on every build. Consider adding it (and `build/`) to `.gitignore`.
 - `node_modules/` appears twice in `.gitignore` (lines 25 and 58). It's harmless.
+
+---
+
+## Follow-up (2026-11-12): Contact Card embedded app
+
+**Status:** built, tested (22 tests), built (`dist/` has 3 files), and deployed together with the host LWC: Deploy ID `0AfQy00000ePVUbKAO`, 81/81 components, 0 errors. Uncommitted on `feature/contact-crud`.
+
+**What it does:** a read-only card for one Contact (name, title, account, email, phone), embedded on `Contact_Record_Page` through the `contactCardHost` LWC.
+
+**How it gets the record:**
+1. A `recordId` in the host's UI-state props (`getViewSDK().getUiState()`), followed when the host pushes a new one.
+2. Otherwise the `?recordId=` query parameter, which the host LWC now adds to the embed URL from its `@api recordId`.
+
+I couldn't verify how `lightning-ui-embedding` sets props: it's a platform component with no local type definitions. So the URL parameter is the path that is known to work.
+
+**Other behavior:**
+- Asks the host to fit the frame height to the card (`view.resize`). This is feature-detected.
+- States: loading, no record ("open from a Contact record page"), not a Contact Id, not found or no access, load error, card.
+
+**Files:**
+- New in the bundle: `src/api/contactCard.ts`, `src/embedding.ts`, `src/components/ContactCardView.tsx`, `src/pages/ContactCardPage.tsx`, and tests under `__tests__`.
+- Changed in the bundle: `graphqlClient.ts` (same hardened version as ContactManager), `routes.tsx` (one catch-all route with no navigation chrome), `index.html` title, bundle description, README paths, and the generated types.
+- Removed: `src/pages/Home.tsx`.
+- LWC: moved from `lwc/force-app/main/default/lwc/contactCardHost` to `lwc/contactCardHost`. It now passes the record Id, and its record-page target is limited to Contact.
+
+**Blocking the embedded card:** `UIBundleSettings.salesforceAppDomain` is still `false` (re-checked read-only), and the embed URL is on the app domain (`*.my.salesforce.app`). Turning it on is your Setup change.
+
+**Org commands:** one deploy, plus read-only checks: retrieve of `Settings:UIBundle` to the scratchpad, and Tooling queries on `LightningComponentBundle` and `MetadataComponentDependency`.
