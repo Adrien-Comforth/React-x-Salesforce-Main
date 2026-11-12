@@ -36,3 +36,91 @@ export type Scalars = {
   Time: { input: string; output: string; }
   Url: { input: string; output: string; }
 };
+
+export enum DataType {
+  Address = 'ADDRESS',
+  Anytype = 'ANYTYPE',
+  Base64 = 'BASE64',
+  Boolean = 'BOOLEAN',
+  Combobox = 'COMBOBOX',
+  Complexvalue = 'COMPLEXVALUE',
+  Currency = 'CURRENCY',
+  Date = 'DATE',
+  Datetime = 'DATETIME',
+  Double = 'DOUBLE',
+  Email = 'EMAIL',
+  Encryptedstring = 'ENCRYPTEDSTRING',
+  Int = 'INT',
+  Json = 'JSON',
+  Junctionidlist = 'JUNCTIONIDLIST',
+  Location = 'LOCATION',
+  Long = 'LONG',
+  Multipicklist = 'MULTIPICKLIST',
+  Percent = 'PERCENT',
+  Phone = 'PHONE',
+  Picklist = 'PICKLIST',
+  Reference = 'REFERENCE',
+  String = 'STRING',
+  Textarea = 'TEXTAREA',
+  Time = 'TIME',
+  Url = 'URL'
+}
+
+export enum FieldExtraTypeInfo {
+  ExternalLookup = 'EXTERNAL_LOOKUP',
+  ImageUrl = 'IMAGE_URL',
+  IndirectLookup = 'INDIRECT_LOOKUP',
+  Personname = 'PERSONNAME',
+  Plaintextarea = 'PLAINTEXTAREA',
+  Richtextarea = 'RICHTEXTAREA',
+  SwitchablePersonname = 'SWITCHABLE_PERSONNAME'
+}
+
+export enum FormFactor {
+  Large = 'LARGE',
+  Medium = 'MEDIUM',
+  Small = 'SMALL'
+}
+
+export enum LayoutComponentType {
+  Canvas = 'CANVAS',
+  CustomLink = 'CUSTOM_LINK',
+  EmptySpace = 'EMPTY_SPACE',
+  Field = 'FIELD',
+  ReportChart = 'REPORT_CHART',
+  VisualforcePage = 'VISUALFORCE_PAGE'
+}
+
+export enum LayoutMode {
+  Create = 'CREATE',
+  Edit = 'EDIT',
+  View = 'VIEW'
+}
+
+export enum LayoutType {
+  Compact = 'COMPACT',
+  Full = 'FULL'
+}
+
+export enum ResultOrder {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
+
+export enum TabOrder {
+  LeftRight = 'LEFT_RIGHT',
+  TopDown = 'TOP_DOWN'
+}
+
+export enum UiBehavior {
+  Edit = 'EDIT',
+  Readonly = 'READONLY',
+  Required = 'REQUIRED'
+}
+
+export type ContactCardQueryVariables = Exact<{
+  recordId: Scalars['ID']['input'];
+}>;
+
+
+export type ContactCardQuery = { uiapi: { query: { Contact?: { edges?: Array<{ node?: { Id: string, Name?: { value?: string | null } | null, Title?: { value?: string | null } | null, Email?: { value?: string | null } | null, Phone?: { value?: string | null } | null, Account?: { Name?: { value?: string | null } | null } | null } | null } | null> | null } | null } } };
