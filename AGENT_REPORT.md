@@ -227,7 +227,7 @@ Local only: `git switch -c feature/contact-crud`, `git commit` (baseline), `npm 
 I couldn't verify how `lightning-ui-embedding` sets props: it's a platform component with no local type definitions. So the URL parameter is the path that is known to work.
 
 **Other behavior:**
-- Asks the host to fit the frame height to the card (`view.resize`). This is feature-detected.
+- Frame height: the embedding bridge (`sf-embedding-bridge`) observes `document.body` and sends its height to the host on its own. The bundle has no `min-h-screen` on html, body or #root: a body at least as tall as the frame made the frame grow endlessly.
 - States: loading, no record ("open from a Contact record page"), not a Contact Id, not found or no access, load error, card.
 
 **Files:**

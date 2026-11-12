@@ -1,6 +1,6 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { useFitHostHeight, useHostRecordId } from '../embedding';
+import { useHostRecordId } from '../embedding';
 import {
   installEmptyViewSdk,
   installMockViewSdk,
@@ -17,7 +17,6 @@ const FROM_URL = '003000000000002AAA';
 
 afterEach(() => {
   window.history.replaceState({}, '', '/');
-  vi.unstubAllGlobals();
   vi.clearAllMocks();
 });
 
@@ -73,33 +72,5 @@ describe('useHostRecordId', () => {
     window.history.replaceState({}, '', `/?recordId=${FROM_URL}`);
     const second = renderHook(() => useHostRecordId());
     await waitFor(() => expect(second.result.current.recordId).toBe(FROM_URL));
-  });
-});
-
-describe('useFitHostHeight', () => {
-  it('asks the host to fit the frame to the content height, once per change', async () => {
-    const view = installMockViewSdk();
-    let notify: () => void = () => {};
-    vi.stubGlobal(
-      'ResizeObserver',
-      class {
-        constructor(callback: () => void) {
-          notify = callback;
-        }
-        observe() {}
-        disconnect() {}
-      }
-    );
-    const element = document.createElement('div');
-    vi.spyOn(element, 'getBoundingClientRect').mockReturnValue({
-      height: 120.4,
-    } as DOMRect);
-
-    renderHook(() => useFitHostHeight({ current: element }));
-    notify();
-    notify();
-
-    await waitFor(() => expect(view.resize).toHaveBeenCalledWith('', '121px'));
-    expect(view.resize).toHaveBeenCalledTimes(1);
   });
 });

@@ -32,7 +32,6 @@ type Props = Record<string, unknown>;
 type UiStateHandler = (state: { props: Props; styles: object }) => void;
 
 export interface MockView {
-  resize: Mock;
   /** Simulates the host pushing new UI-state props. */
   push: (props: Props) => void;
 }
@@ -50,11 +49,9 @@ export function installMockViewSdk(props: Props = {}): MockView {
         };
       },
     }),
-    resize: vi.fn().mockResolvedValue(undefined),
   };
   (getViewSDK as unknown as Mock).mockResolvedValue(view);
   return {
-    resize: view.resize,
     push: next => handlers.forEach(handler => handler({ props: next, styles: {} })),
   };
 }

@@ -1,9 +1,12 @@
 /**
  * Host integration for the embedded card (lightning-ui-embedding on a record
  * page), through the shared ViewSDK. Every call is feature-detected: outside an
- * embedding host the ViewSDK is empty and these hooks fall back quietly.
+ * embedding host the ViewSDK is empty and this hook falls back quietly.
+ *
+ * Frame height needs no code here: the embedding bridge (sf-embedding-bridge)
+ * already observes document.body and sends its height to the host.
  */
-import { useEffect, useState, type RefObject } from 'react';
+import { useEffect, useState } from 'react';
 import { getViewSDK, type UiState } from '@salesforce/platform-sdk';
 
 /** The query parameter the host LWC adds to the app URL. */
@@ -70,31 +73,4 @@ export function useHostRecordId(): HostRecord {
   }, []);
 
   return hostRecord;
-}
-
-/** Asks the host to fit the frame to the element's height whenever it changes. */
-export function useFitHostHeight(ref: RefObject<HTMLElement | null>): void {
-  useEffect(() => {
-    const element = ref.current;
-    if (!element || typeof ResizeObserver === 'undefined') {
-      return;
-    }
-
-    let lastHeight = 0;
-    const observer = new ResizeObserver(() => {
-      const height = Math.ceil(element.getBoundingClientRect().height);
-      if (height === 0 || height === lastHeight) {
-        return;
-      }
-      lastHeight = height;
-      getViewSDK()
-        .then(view => view.resize?.('', `${height}px`))
-        .catch((error: unknown) =>
-          console.warn('[ContactCard] Resize request failed:', error)
-        );
-    });
-
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [ref]);
 }

@@ -1,9 +1,9 @@
-import { useRef, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { fetchContactCard, isContactId } from '../api/contactCard';
 import { StatusAlert } from '../components/alerts/status-alert';
 import { ContactCardView } from '../components/ContactCardView';
 import { Spinner } from '../components/ui/spinner';
-import { useFitHostHeight, useHostRecordId } from '../embedding';
+import { useHostRecordId } from '../embedding';
 import { useAsyncData } from '../hooks/useAsyncData';
 
 export const NO_RECORD_MESSAGE =
@@ -21,9 +21,6 @@ function Loading() {
 }
 
 export default function ContactCardPage() {
-  const containerRef = useRef<HTMLElement>(null);
-  useFitHostHeight(containerRef);
-
   const { ready, recordId } = useHostRecordId();
   const contactId = isContactId(recordId) ? recordId : null;
   const {
@@ -59,7 +56,7 @@ export default function ContactCardPage() {
   }
 
   return (
-    <main ref={containerRef} className="p-2">
+    <main className="p-2">
       {content}
     </main>
   );

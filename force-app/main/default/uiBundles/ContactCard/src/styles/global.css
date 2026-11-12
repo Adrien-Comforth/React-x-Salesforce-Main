@@ -1,12 +1,13 @@
 @import 'tailwindcss';
 
 @layer base {
-  html,
-  body,
-  #root {
-    @apply min-h-screen;
-  }
-
+  /*
+   * No min-h-screen on html, body or #root: this app runs in an auto-height
+   * iframe. The embedding bridge reports document.body's height to the host,
+   * which sets the frame to it. A body at least 100vh tall can never be
+   * shorter than the frame, so each report fed the next and the frame kept
+   * growing. The body must be exactly as tall as its content.
+   */
   body {
     @apply antialiased bg-white;
   }
